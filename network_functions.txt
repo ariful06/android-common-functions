@@ -1,0 +1,32 @@
+ public String getMobileApiVersion() {
+        return String.valueOf(android.os.Build.VERSION.SDK_INT);
+    }
+
+    public String getDeviceName() {
+        return android.os.Build.MODEL;
+    }
+
+    public String getUserAgent() {
+        return System.getProperty("http.agent");
+    }
+
+    public String getAndroidID() {
+        return Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    
+    public boolean internetIsConnected() {
+        try {
+            String command = "ping -c 1 google.com";
+            return (Runtime.getRuntime().exec(command).waitFor() == 0);
+        } catch (Exception e) {
+            return false;
+        }
+    }
